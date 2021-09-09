@@ -9,7 +9,7 @@ FROM covid.coviddeaths ORDER BY 1, 2;
 
 -- TOTAL CASES vs TOTAL DEATHS 
 -- SHOWS LIKELIHOOD OF DYING IF YOU CONTRACT COVID IN YOUR COUNTRY
-SELECT location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as death_percentage
+SELECT location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as death_rate
 FROM covid.coviddeaths
 -- WHERE location = "India"
 WHERE location LIKE "%india%" ORDER BY 1, 2;
@@ -29,3 +29,13 @@ GROUP BY location ORDER BY percent_population_infected DESC;
 SELECT location, max(total_deaths) as total_death_count, max((total_deaths/population)*100) as percent_population_died
 FROM covid.coviddeaths WHERE continent IS NOT NULL
 GROUP BY location ORDER BY percent_population_died DESC;
+
+-- CONTINENTS WITH HIGHEST DEATH COUNT
+SELECT continent, max(total_deaths) as total_death_count, max((total_deaths/population)*100) as percent_population_died
+FROM covid.coviddeaths WHERE continent IS NOT NULL
+GROUP BY continent ORDER BY percent_population_died DESC;
+
+-- GLOABAL NUMBERS
+SELECT date, SUM(new_cases) as new_cases, SUM(new_deaths) as new_deaths, (SUM(new_deaths)/SUM(new_cases))*100 as death_rate
+FROM covid.coviddeaths WHERE continent IS NOT NULL
+GROUP BY date ORDER BY 1;
