@@ -39,3 +39,11 @@ GROUP BY continent ORDER BY percent_population_died DESC;
 SELECT date, SUM(new_cases) as new_cases, SUM(new_deaths) as new_deaths, (SUM(new_deaths)/SUM(new_cases))*100 as death_rate
 FROM covid.coviddeaths WHERE continent IS NOT NULL
 GROUP BY date ORDER BY 1;
+
+-- CALCULATING CUMULATIVE PEOPLE VACCINATED USING NEW VACCINATIONS COLOUMN
+SELECT  dea.location, dea.date, dea.new_cases, dea.total_cases, dea.new_deaths, dea.total_deaths, 
+vac.new_vaccinations, SUM(vac.new_vaccinations) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) as total_vaccinations
+FROM covid.covidvaccinations vac JOIN covid.coviddeaths dea
+ON vac.location = dea.location AND vac.date = dea.date
+WHERE dea.continent IS NOT NULL 
+ORDER BY 1, 2;
