@@ -1,7 +1,7 @@
 -- Queries used for Tableau Visualization
 
 -- 1. TOTAL_CASES vs TOTAL_DEATHS vs DEATH_RATE
-SELECT SUM(new_cases) AS total_cases, SUM(new_deaths) AS total_deaths, SUM(new_deaths)/SUM(new_cases) AS death_rate
+SELECT location, SUM(new_cases) AS total_cases, SUM(new_deaths) AS total_deaths, SUM(new_deaths)/SUM(new_cases) AS death_rate
 FROM covid.coviddeaths
 WHERE continent IS NOT NULL
 ORDER BY 1, 2;
